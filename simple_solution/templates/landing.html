@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Homepage</title>
+    <script src="https://js.stripe.com/v3/"></script>
+</head>
+<body>
+    <div class="description">
+        <h3>{{ item.name }}</h3>
+        <h5>{{ item.display_price }} USD.</h5>
+    </div>
+    <button id="buy-button" data-item-id="{{ item.id }}">Buy</button>
+
+
+
+    <script>
+        document.getElementById('buy-button').addEventListener('click', function() {
+      var itemId = this.getAttribute('data-item-id');
+      var stripe = Stripe("{{ STRIPE_PUBLIC_KEY }}");
+      fetch('/buy/' + itemId)
+        .then(function(response) {
+          return response.json();
+        })
+        .then(function (session) {
+          return stripe.redirectToCheckout({ sessionId: session.id });
+        })
+        .catch(function(error) {
+          console.error('Ошибка:', error);
+        });
+    });
+  </script>
+
+</body>
+</html>
