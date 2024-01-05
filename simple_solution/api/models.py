@@ -15,12 +15,19 @@ class Item(models.Model):
 
 class Discount(models.Model):
     name = models.CharField(max_length=100)
-    amount = models.DecimalField(max_digits=10, decimal_places=2)
+    amount = models.PositiveIntegerField()
+
+    def __str__(self):
+        return self.name
 
 
 class Tax(models.Model):
     name = models.CharField(max_length=100)
-    rate = models.DecimalField(max_digits=5, decimal_places=2)
+    rate = models.PositiveIntegerField()
+
+    def __str__(self):
+        return self.name
+
 
 class Order(models.Model):
     first_name = models.CharField(max_length=50)
@@ -33,8 +40,8 @@ class Order(models.Model):
     updated = models.DateTimeField(auto_now=True)
     paid = models.BooleanField(default=False)
     items = models.ManyToManyField(Item, through='OrderItem')
-    discount = models.ForeignKey(Discount, null=True, blank=True, on_delete=models.SET_NULL)
-    tax = models.ForeignKey(Tax, null=True, blank=True, on_delete=models.SET_NULL)
+    discount = models.ManyToManyField(Discount, through='OrderDiscount')
+    tax = models.ManyToManyField(Tax, through='OrderTax')
 
     class Meta:
         ordering = ('-created_at',)
@@ -45,13 +52,29 @@ class Order(models.Model):
     def get_total_cost(self):
         total = sum(item.price for item in self.items.all())
 
-        if self.discount:
-            total -= self.discount.amount
+        if self.discount.exists():
+            discount = sum(discount.amount for discount in self.discount.all())
+            if discount <= total:
+                total -= discount
 
-        if self.tax:
-            total *= (1 + self.tax.rate / 100)
+        if self.tax.exists():
+            tax = sum(tax.rate for tax in self.tax.all())
+            tax_amount = total * tax / 100
+            total += tax_amount
 
-        return total
+        return int(total)
+
+
+class OrderDiscount(models.Model):
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='order_discount')
+    discount = models.ForeignKey(Discount, on_delete=models.CASCADE, related_name='order_discount')
+    amount = models.PositiveIntegerField()
+
+
+class OrderTax(models.Model):
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='order_tax')
+    tax = models.ForeignKey(Tax, on_delete=models.CASCADE, related_name='order_tax')
+    rate = models.PositiveIntegerField()
 
 
 class OrderItem(models.Model):
@@ -65,6 +88,3 @@ class OrderItem(models.Model):
 
     def get_cost(self):
         return self.price * self.quantity
-
-
-

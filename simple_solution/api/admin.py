@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Item, Order, OrderItem, Tax, Discount
+from .models import Item, Order, OrderItem, Tax, Discount, OrderTax, OrderDiscount
 
 
 class OrderItemInline(admin.TabularInline):
@@ -7,11 +7,11 @@ class OrderItemInline(admin.TabularInline):
 
 
 class DiscountInline(admin.TabularInline):
-    model = Discount
+    model = OrderDiscount
 
 
 class TaxInline(admin.TabularInline):
-    model = Tax
+    model = OrderTax
 
 
 @admin.register(Order)
