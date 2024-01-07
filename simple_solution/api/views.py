@@ -1,11 +1,11 @@
 import stripe
 from django.conf import settings
-from django.http import HttpResponse, JsonResponse
+from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 from django.views import View
 from django.views.generic import TemplateView
 
-from .models import Item, Order, OrderItem
+from .models import Item, Order, Tax, Discount
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
@@ -30,6 +30,27 @@ class CreateCheckoutSessionOrderView(View):
         order_id = self.kwargs["order_id"]
         DOMAIN: str = 'http://127.0.0.1:8000'
         order = Order.objects.get(id=order_id)
+        # tax_rates = []
+        # for tax in order.tax.all():
+        #     tax_rate = stripe.TaxRate.create(
+        #         display_name=tax.name,
+        #         description=tax.name,
+        #         percentage=tax.rate,
+        #         jurisdiction="RU",
+        #         inclusive=False,
+        #     )
+        #     tax_rates.append(tax_rate.id)
+        #
+        # discounts = []
+        # for discount in order.discount.all():
+        #     discount_amount = stripe.Coupon.create(
+        #         amount_off=discount.amount,
+        #         duration='once',
+        #         currency='usd',
+        #         name=discount.name,
+        #     )
+        #     discounts.append(discount_amount.id)
+
         session = stripe.checkout.Session.create(
             payment_method_types=['card'],
             line_items=[
@@ -43,6 +64,7 @@ class CreateCheckoutSessionOrderView(View):
                     },
                     'quantity': 1,
                 },
+
             ],
             payment_intent_data={
                 'metadata': {
@@ -52,6 +74,8 @@ class CreateCheckoutSessionOrderView(View):
             mode='payment',
             success_url=DOMAIN + '/success/',
             cancel_url=DOMAIN + '/cancel/',
+            # tax_rates=tax_rates,
+            # discounts=[{"discounts": '{{COUPON_ID}}'}],
         )
         return JsonResponse({'id': session.id})
 
