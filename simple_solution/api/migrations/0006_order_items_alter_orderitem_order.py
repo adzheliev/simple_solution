@@ -5,20 +5,23 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('api', '0005_alter_order_options_remove_order_items_order_address_and_more'),
+        ("api", "0005_alter_order_options_remove_order_items_order_address_and_more"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='order',
-            name='items',
-            field=models.ManyToManyField(through='api.OrderItem', to='api.item'),
+            model_name="order",
+            name="items",
+            field=models.ManyToManyField(through="api.OrderItem", to="api.item"),
         ),
         migrations.AlterField(
-            model_name='orderitem',
-            name='order',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='order_items', to='api.order'),
+            model_name="orderitem",
+            name="order",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="order_items",
+                to="api.order",
+            ),
         ),
     ]

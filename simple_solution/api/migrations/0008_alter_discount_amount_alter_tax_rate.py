@@ -4,20 +4,19 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('api', '0007_discount_order_discount_tax_order_tax'),
+        ("api", "0007_discount_order_discount_tax_order_tax"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='discount',
-            name='amount',
+            model_name="discount",
+            name="amount",
             field=models.IntegerField(),
         ),
         migrations.AlterField(
-            model_name='tax',
-            name='rate',
+            model_name="tax",
+            name="rate",
             field=models.IntegerField(),
         ),
     ]

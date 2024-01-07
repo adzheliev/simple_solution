@@ -5,38 +5,79 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('api', '0006_order_items_alter_orderitem_order'),
+        ("api", "0006_order_items_alter_orderitem_order"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Discount',
+            name="Discount",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=100)),
-                ('amount', models.DecimalField(decimal_places=2, max_digits=10)),
-                ('order', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='discounts', to='api.order')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=100)),
+                ("amount", models.DecimalField(decimal_places=2, max_digits=10)),
+                (
+                    "order",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="discounts",
+                        to="api.order",
+                    ),
+                ),
             ],
         ),
         migrations.AddField(
-            model_name='order',
-            name='discount',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='order_discount', to='api.discount'),
+            model_name="order",
+            name="discount",
+            field=models.ForeignKey(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.SET_NULL,
+                related_name="order_discount",
+                to="api.discount",
+            ),
         ),
         migrations.CreateModel(
-            name='Tax',
+            name="Tax",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=100)),
-                ('rate', models.DecimalField(decimal_places=2, max_digits=5)),
-                ('order', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='taxes', to='api.order')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=100)),
+                ("rate", models.DecimalField(decimal_places=2, max_digits=5)),
+                (
+                    "order",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="taxes",
+                        to="api.order",
+                    ),
+                ),
             ],
         ),
         migrations.AddField(
-            model_name='order',
-            name='tax',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='order_tax', to='api.tax'),
+            model_name="order",
+            name="tax",
+            field=models.ForeignKey(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.SET_NULL,
+                related_name="order_tax",
+                to="api.tax",
+            ),
         ),
     ]

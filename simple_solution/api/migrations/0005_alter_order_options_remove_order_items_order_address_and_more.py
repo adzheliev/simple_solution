@@ -6,74 +6,95 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('api', '0004_order'),
+        ("api", "0004_order"),
     ]
 
     operations = [
         migrations.AlterModelOptions(
-            name='order',
-            options={'ordering': ('-created_at',)},
+            name="order",
+            options={"ordering": ("-created_at",)},
         ),
         migrations.RemoveField(
-            model_name='order',
-            name='items',
+            model_name="order",
+            name="items",
         ),
         migrations.AddField(
-            model_name='order',
-            name='address',
+            model_name="order",
+            name="address",
             field=models.CharField(default=django.utils.timezone.now, max_length=250),
             preserve_default=False,
         ),
         migrations.AddField(
-            model_name='order',
-            name='city',
+            model_name="order",
+            name="city",
             field=models.CharField(default=django.utils.timezone.now, max_length=100),
             preserve_default=False,
         ),
         migrations.AddField(
-            model_name='order',
-            name='email',
-            field=models.EmailField(default='citi', max_length=254),
+            model_name="order",
+            name="email",
+            field=models.EmailField(default="citi", max_length=254),
             preserve_default=False,
         ),
         migrations.AddField(
-            model_name='order',
-            name='first_name',
-            field=models.CharField(default='Alan', max_length=50),
+            model_name="order",
+            name="first_name",
+            field=models.CharField(default="Alan", max_length=50),
             preserve_default=False,
         ),
         migrations.AddField(
-            model_name='order',
-            name='last_name',
-            field=models.CharField(default='Dzheliev', max_length=50),
+            model_name="order",
+            name="last_name",
+            field=models.CharField(default="Dzheliev", max_length=50),
             preserve_default=False,
         ),
         migrations.AddField(
-            model_name='order',
-            name='paid',
+            model_name="order",
+            name="paid",
             field=models.BooleanField(default=False),
         ),
         migrations.AddField(
-            model_name='order',
-            name='postal_code',
+            model_name="order",
+            name="postal_code",
             field=models.CharField(default=1232131231, max_length=20),
             preserve_default=False,
         ),
         migrations.AddField(
-            model_name='order',
-            name='updated',
+            model_name="order",
+            name="updated",
             field=models.DateTimeField(auto_now=True),
         ),
         migrations.CreateModel(
-            name='OrderItem',
+            name="OrderItem",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('price', models.DecimalField(decimal_places=2, max_digits=10)),
-                ('quantity', models.PositiveIntegerField(default=1)),
-                ('item', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='order_items', to='api.item')),
-                ('order', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='items', to='api.order')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("price", models.DecimalField(decimal_places=2, max_digits=10)),
+                ("quantity", models.PositiveIntegerField(default=1)),
+                (
+                    "item",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="order_items",
+                        to="api.item",
+                    ),
+                ),
+                (
+                    "order",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="items",
+                        to="api.order",
+                    ),
+                ),
             ],
         ),
     ]

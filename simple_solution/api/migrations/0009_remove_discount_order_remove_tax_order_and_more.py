@@ -5,62 +5,107 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('api', '0008_alter_discount_amount_alter_tax_rate'),
+        ("api", "0008_alter_discount_amount_alter_tax_rate"),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='discount',
-            name='order',
+            model_name="discount",
+            name="order",
         ),
         migrations.RemoveField(
-            model_name='tax',
-            name='order',
+            model_name="tax",
+            name="order",
         ),
         migrations.AlterField(
-            model_name='discount',
-            name='amount',
+            model_name="discount",
+            name="amount",
             field=models.PositiveIntegerField(),
         ),
         migrations.RemoveField(
-            model_name='order',
-            name='discount',
+            model_name="order",
+            name="discount",
         ),
         migrations.RemoveField(
-            model_name='order',
-            name='tax',
+            model_name="order",
+            name="tax",
         ),
         migrations.AlterField(
-            model_name='tax',
-            name='rate',
+            model_name="tax",
+            name="rate",
             field=models.PositiveIntegerField(),
         ),
         migrations.CreateModel(
-            name='OrderDiscount',
+            name="OrderDiscount",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('discount', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='order_discount', to='api.discount')),
-                ('order', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='order_discount', to='api.order')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "discount",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="order_discount",
+                        to="api.discount",
+                    ),
+                ),
+                (
+                    "order",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="order_discount",
+                        to="api.order",
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='OrderTax',
+            name="OrderTax",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('order', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='order_tax', to='api.order')),
-                ('tax', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='order_tax', to='api.tax')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "order",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="order_tax",
+                        to="api.order",
+                    ),
+                ),
+                (
+                    "tax",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="order_tax",
+                        to="api.tax",
+                    ),
+                ),
             ],
         ),
         migrations.AddField(
-            model_name='order',
-            name='discount',
-            field=models.ManyToManyField(through='api.OrderDiscount', to='api.discount'),
+            model_name="order",
+            name="discount",
+            field=models.ManyToManyField(
+                through="api.OrderDiscount", to="api.discount"
+            ),
         ),
         migrations.AddField(
-            model_name='order',
-            name='tax',
-            field=models.ManyToManyField(through='api.OrderTax', to='api.tax'),
+            model_name="order",
+            name="tax",
+            field=models.ManyToManyField(through="api.OrderTax", to="api.tax"),
         ),
     ]
