@@ -12,6 +12,18 @@ from .models import Item, Order
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
 
+class IndexPageView(TemplateView):
+    """Class for homepage visualization"""
+    template_name = "index.html"
+
+    def get_context_data(self, **kwargs) -> dict:
+        context = {
+            'localhost': 'http://127.0.0.1:8000',
+        }
+        return context
+
+
+
 class ProductLandingPageView(TemplateView):
     """Class for product visualization"""
     template_name = "landing.html"
@@ -28,13 +40,14 @@ class ProductLandingPageView(TemplateView):
 
 class CreateCheckoutSessionOrderView(View):
     """Stripe Checkout for Orders"""
+
     def get(self, request, *args, **kwargs) -> JsonResponse:
         """Creating Stripe session for order"""
         order_id = self.kwargs["order_id"]
         DOMAIN: str = "http://127.0.0.1:8000"
         order = Order.objects.get(id=order_id)
 
-        #Taxes and Discounts for Stripe are still under developing
+        # Taxes and Discounts for Stripe are still under developing
 
         # tax_rates = []
         # for tax in order.tax.all():
@@ -87,6 +100,7 @@ class CreateCheckoutSessionOrderView(View):
 
 class CreateCheckoutSessionView(View):
     """Stripe Checkout for single product"""
+
     def get(self, request, *args, **kwargs) -> JsonResponse:
         """Creating Stripe session for order"""
         item_id = self.kwargs["item_id"]

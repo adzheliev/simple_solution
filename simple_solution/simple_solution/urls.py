@@ -5,12 +5,15 @@ from api.views import (
     ProductLandingPageView,
     OrderView,
     CreateCheckoutSessionOrderView,
+    IndexPageView,
+
 )
 from django.contrib import admin
 from django.urls import path
 
 urlpatterns = [
     path("admin/", admin.site.urls),
+    path('', IndexPageView.as_view(), name='index'),
     path(
         "order_checkout/<int:order_id>",
         CreateCheckoutSessionOrderView.as_view(),
