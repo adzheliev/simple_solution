@@ -2,8 +2,6 @@
 
 For task please see TASK.md
 
-Application is running on http://16.171.151.22:8000
-
 ### Setup locally
 
 Open your IDE of choice and clone this repository
