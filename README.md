@@ -1,7 +1,3 @@
-## Test task for Simple Solutions
-
-For task please see TASK.md
-
 ### Setup locally
 
 Open your IDE of choice and clone this repository
